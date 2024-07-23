@@ -3,7 +3,7 @@ services:
     image: shodon2007/networth-proxy:latest
     container_name: networth-proxy
     env_file:
-      - ./.env
+      - ./networth-proxy/.env
     ports:
       - 80:80
       - 3000:3000
@@ -27,12 +27,13 @@ services:
         condition: service_healthy
         restart: true
     networks:
+      - db
       - back
   db:
     image: shodon2007/networth-db:latest
     container_name: networth-db
     env_file:
-      - ./db.env
+      - ./networth-db/.env
     volumes:
       - ./networth-db/data:/var/lib/mysql
       - ./networth-db/initdb:/docker-entrypoint-initdb.d
@@ -43,10 +44,12 @@ services:
       retries: 3
       start_period: 5s
     networks:
-      - back
+      - db
 
 networks:
   front:
     driver: bridge
   back:
+    driver: bridge
+  db:
     driver: bridge

@@ -14,6 +14,7 @@ stop:
 
 
 # logs
+# example: make logs:api
 logs:
 	docker-compose logs
 logs\:client:
@@ -24,3 +25,14 @@ logs\:api:
 	docker-compose logs api
 logs\:proxy:
 	docker-compose logs proxy
+
+# Enter the container terminal
+# example: make enter:api
+enter\:client:
+	docker container exec -it networth-client bash
+enter\:db:
+	docker container exec -it networth-db bash
+enter\:api:
+	docker container exec -it networth-api bash
+enter\:proxy:
+	docker container exec -it networth-proxy bash
