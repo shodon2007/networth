@@ -1,0 +1,52 @@
+services:
+  proxy:
+    image: shodon2007/networth-proxy:latest
+    container_name: networth-proxy
+    env_file:
+      - ./.env
+    ports:
+      - 80:80
+      - 3000:3000
+    depends_on:
+      - client
+    networks:
+      - back
+      - front
+  client:
+    image: shodon2007/networth-client:latest
+    container_name: networth-client
+    depends_on:
+      - api
+    networks:
+      - front
+  api:
+    image: shodon2007/networth-api:latest
+    container_name: networth-api
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+    networks:
+      - back
+  db:
+    image: shodon2007/networth-db:latest
+    container_name: networth-db
+    env_file:
+      - ./db.env
+    volumes:
+      - ./networth-db/data:/var/lib/mysql
+      - ./networth-db/initdb:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    networks:
+      - back
+
+networks:
+  front:
+    driver: bridge
+  back:
+    driver: bridge
