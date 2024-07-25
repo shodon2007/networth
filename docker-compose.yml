@@ -22,6 +22,8 @@ services:
   api:
     image: shodon2007/networth-api:latest
     container_name: networth-api
+    env_file:
+      - ./networth-api/.env
     depends_on:
       db:
         condition: service_healthy
