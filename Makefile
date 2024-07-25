@@ -4,6 +4,7 @@ all:
 	git clone https://github.com/shodon2007/networth-api
 	git clone https://github.com/shodon2007/networth-client
 	git clone https://github.com/shodon2007/networth-proxy
+	git clone https://github.com/shodon2007/networth-search
 
 
 # start and stop docker-compose
