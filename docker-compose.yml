@@ -26,14 +26,20 @@ services:
       db:
         condition: service_healthy
         restart: true
+      search:
+        condition: service_healthy
+        restart: true
     networks:
       - db
       - back
+      - search
   db:
     image: shodon2007/networth-db:latest
     container_name: networth-db
     env_file:
       - ./networth-db/.env
+    ports:
+      - 3307:3306
     volumes:
       - ./networth-db/data:/var/lib/mysql
       - ./networth-db/initdb:/docker-entrypoint-initdb.d
@@ -45,6 +51,23 @@ services:
       start_period: 5s
     networks:
       - db
+  search:
+    image: shodon2007/networth-search
+    container_name: networth-search
+    ports:
+      - 7700:7700
+    healthcheck:
+      test: curl -X GET 'http://localhost:7700/health'
+      interval: 10s
+      timeout: 5s
+      retries: 2
+      start_period: 5s
+    volumes:
+      - ./networth-search/meili_data:/meili_data
+    env_file:
+      - ./networth-search/.env
+    networks:
+      - search
 
 networks:
   front:
@@ -52,4 +75,6 @@ networks:
   back:
     driver: bridge
   db:
+    driver: bridge
+  search:
     driver: bridge
