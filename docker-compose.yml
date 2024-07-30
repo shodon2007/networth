@@ -23,7 +23,7 @@ services:
     container_name: networth-api
     build: ./networth-api/
     env_file:
-      - ./networth-api/.env
+      - ./networth-api/prod.env
     depends_on:
       db:
         condition: service_healthy

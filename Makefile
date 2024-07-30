@@ -7,7 +7,9 @@ all:
 	git clone https://github.com/shodon2007/networth-search
 
 
-# start and stop docker-compose
+# build, start and stop docker-compose
+build:
+	docker-compose build
 start:
 	docker-compose up -d
 stop:
