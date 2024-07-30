@@ -1,7 +1,7 @@
 services:
   proxy:
-    image: shodon2007/networth-proxy:latest
     container_name: networth-proxy
+    build: ./networth-proxy/
     env_file:
       - ./networth-proxy/.env
     ports:
@@ -13,15 +13,15 @@ services:
       - back
       - front
   client:
-    image: shodon2007/networth-client:latest
     container_name: networth-client
+    build: ./networth-client/
     depends_on:
       - api
     networks:
       - front
   api:
-    image: shodon2007/networth-api:latest
     container_name: networth-api
+    build: ./networth-api/
     env_file:
       - ./networth-api/.env
     depends_on:
@@ -36,8 +36,8 @@ services:
       - back
       - search
   db:
-    image: shodon2007/networth-db:latest
     container_name: networth-db
+    build: ./networth-db/
     env_file:
       - ./networth-db/.env
     ports:
@@ -54,8 +54,8 @@ services:
     networks:
       - db
   search:
-    image: shodon2007/networth-search
     container_name: networth-search
+    build: ./networth-search/
     ports:
       - 7700:7700
     healthcheck:
